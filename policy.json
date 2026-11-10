@@ -1,0 +1,34 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "dossierfacile",
+    "rateLimits": null,
+    "rights": {
+        "commercial": "contract",
+        "openSourceRequired": null,
+        "caching": {
+            "permission": "allowed",
+            "maxTtl": 7689600
+        },
+        "storage": "contract",
+        "redistribution": "forbidden",
+        "attribution": {
+            "required": true,
+            "text": "DossierFacile est le dossier de location numérique de l'Etat. Entièrement gratuit, conforme et sécurisé, il protège les locataires et rassure les propriétaires.",
+            "url": "https://www.dossierfacile.logement.gouv.fr",
+            "where": [
+                "display"
+            ]
+        }
+    },
+    "requirements": {
+        "key": true
+    },
+    "provenance": {
+        "terms": "https://partenaire.dossierfacile.logement.gouv.fr",
+        "policy": "https://partenaire.dossierfacile.logement.gouv.fr/documentation-technique/api",
+        "contact": "contact@dossierfacile.fr",
+        "notes": "Partners only: the partner charter signed, a security assurance plan and terms of use with a privacy policy for DossierFacile Connect (commercial use, caching and storage declared 'contract'). Retention: a file is kept three months at most from when it was obtained (P3M), and not at all once the applicant revoked the access; three months declared as caching's longest time to live at their shortest span, 89 days (7,689,600 s), the schema having no retention field. Documents are read at DossierFacile, watermarked, never copied, only while the file is VALIDATED; the link to a file is never shown to a third party without the applicant's consent; the service is never offered to a third party for a fee (redistribution forbidden); a refusal of a validated file is motivated and reported. The Connect button with DossierFacile's text is shown. Price: free. Rate limits: none published (unknown).",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer"
+    }
+}

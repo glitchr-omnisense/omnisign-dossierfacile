@@ -26,6 +26,12 @@ Written from DossierFacile's partner documentation and its public back-end's sou
 [Documentation](docs/index.md): the flow, the calls, the options, the callbacks, the retention and
 what a site must not keep, the charter.
 
+## Usage policy
+
+`policy.json`, read on 2026-11-10 on DossierFacile's [partner portal](https://partenaire.dossierfacile.logement.gouv.fr):
+partners only (a contract), a file kept three months at most (caching's longest time to live, 89
+days), the Connect button and its text shown, never resold; no rate limit published.
+
 ## Responsibility
 
 This package is an independent, unofficial client: it is not affiliated with, endorsed by or

@@ -2,6 +2,7 @@
 
 namespace Omnisign\Dossierfacile;
 
+use Omnisense\Contracts\Policy\UsagePolicy;
 use Omnisign\Config;
 use Omnisign\Dossierfacile\Action\ConnectAction;
 use Omnisign\Dossierfacile\Action\ConnectUrlAction;
@@ -29,8 +30,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 final class DossierfacileGatewayFactory extends GatewayFactory
 {
+    private static ?UsagePolicy $policy = null;
+
     public function __construct(private readonly ?HttpClientInterface $http = null)
     {
+    }
+
+    /** Its usage policy, as policy.json declares it (read once). */
+    public static function usagePolicy(): UsagePolicy
+    {
+        return self::$policy ??= UsagePolicy::fromFile(__DIR__.'/policy.json');
     }
 
     public static function terms(): Terms
@@ -77,6 +86,7 @@ final class DossierfacileGatewayFactory extends GatewayFactory
                 documents: false,
                 contracts: [Capabilities::TENANT_FILE],
                 terms: self::terms(),
+                policy: self::usagePolicy(),
             ),
             'omnisign.api' => fn (Config $c) => new Api(
                 $this->http ?? HttpClient::create(),
@@ -86,6 +96,7 @@ final class DossierfacileGatewayFactory extends GatewayFactory
                 rtrim(\is_string($url = $c->get('api_url')) && '' !== $url ? $url : ($c->bool('preprod') ? Api::PREPROD_API_URL : Api::API_URL), '/'),
                 \is_string($key = $c->get('callback_api_key')) && '' !== $key ? $key : null,
                 ($clock = $c->get('clock')) instanceof \Closure ? $clock : null,
+                $c->backoff(),
             ),
             'omnisign.action.tenant_file_connect_url' => new ConnectUrlAction(),
             'omnisign.action.tenant_file_connect' => new ConnectAction(),

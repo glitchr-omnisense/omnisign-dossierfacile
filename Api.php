@@ -2,6 +2,7 @@
 
 namespace Omnisign\Dossierfacile;
 
+use Omnisense\Contracts\Policy\Backoff;
 use Omnisign\Exception\InvalidKeyException;
 use Omnisign\Exception\InvalidNotificationException;
 use Omnisign\Exception\ProviderException;
@@ -42,6 +43,7 @@ final class Api
         public readonly string $apiUrl = self::API_URL,
         #[\SensitiveParameter] private readonly ?string $callbackApiKey = null,
         private readonly ?\Closure $clock = null,
+        private readonly ?Backoff $backoff = null,
     ) {
     }
 
@@ -124,7 +126,7 @@ final class Api
      */
     private function token(#[\SensitiveParameter] array $form): array
     {
-        $answer = Answer::send($this->http, self::PROVIDER, 'POST', $this->ssoUrl.'/token', ['body' => $form]);
+        $answer = Answer::send($this->http, self::PROVIDER, 'POST', $this->ssoUrl.'/token', ['body' => $form], $this->backoff);
         if ($answer->status >= 400) {
             $error = json_decode($answer->body, true);
             $code = \is_array($error) && \is_string($error['error'] ?? null) ? $error['error'] : null;
@@ -144,7 +146,7 @@ final class Api
     /** @return array<string, mixed> */
     private function get(string $path, #[\SensitiveParameter] string $token): array
     {
-        $answer = Answer::send($this->http, self::PROVIDER, 'GET', $this->apiUrl.$path, ['headers' => ['Authorization' => 'Bearer '.$token, 'Accept' => 'application/json']]);
+        $answer = Answer::send($this->http, self::PROVIDER, 'GET', $this->apiUrl.$path, ['headers' => ['Authorization' => 'Bearer '.$token, 'Accept' => 'application/json']], $this->backoff);
         if (401 === $answer->status) {
             $this->token = null;
 

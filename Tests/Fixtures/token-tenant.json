@@ -1,0 +1,1 @@
+{"access_token":"eyJhbGciOiJSUzI1NiJ9.tenant.sig","expires_in":300,"refresh_expires_in":1800,"refresh_token":"eyJhbGciOiJIUzI1NiJ9.refresh.sig","token_type":"Bearer","not-before-policy":0,"session_state":"5b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e","scope":"openid dfc email profile"}

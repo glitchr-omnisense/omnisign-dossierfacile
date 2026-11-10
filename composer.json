@@ -1,0 +1,46 @@
+{
+    "name": "omnisign/dossierfacile",
+    "type": "library",
+    "description": "Omnisign DossierFacile: a rental applicant's file - identity, residency, activity, income, tax, guarantors, as the State checked them - shared with the application through DossierFacile Connect (OpenID Connect on DossierFacile's Keycloak): the consent page, the code exchanged and the file read and linked, the file read again with the partner's client credentials, the partner callbacks with their x-api-key checked; the three-month retention carried on the file. For partners under DossierFacile's charter.",
+    "keywords": [
+        "dossierfacile",
+        "tenant-file",
+        "rental",
+        "location",
+        "logement",
+        "oauth",
+        "omnisign"
+    ],
+    "homepage": "https://github.com/glitchr-omnisense/omnisign-dossierfacile",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marco Meyer",
+            "email": "marco.meyer@glitchr.io"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "omnisense/omnisign": "^1.1@dev",
+        "symfony/http-client": "^6.4|^7.0|^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Omnisign\\Dossierfacile\\": ""
+        },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Omnisign\\Dossierfacile\\Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

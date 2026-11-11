@@ -29,8 +29,9 @@ what a site must not keep, the charter.
 ## Usage policy
 
 `policy.json`, read on 2026-11-10 on DossierFacile's [partner portal](https://partenaire.dossierfacile.logement.gouv.fr):
-partners only (a contract), a file kept three months at most (caching's longest time to live, 89
-days), the Connect button and its text shown, never resold; no rate limit published.
+partners only (a contract), a file kept three months at most (`rights.retention`, 89 days at their
+shortest; with omnisense/contracts 9a96e22 or later, no cached answer outlives it), the Connect button
+and its text shown, never resold; no rate limit published.
 
 ## Responsibility
 

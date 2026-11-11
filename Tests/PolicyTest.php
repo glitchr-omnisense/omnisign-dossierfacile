@@ -26,7 +26,8 @@ final class PolicyTest extends TestCase
         self::assertSame('2026-11-10', $declared->provenance->verifiedAt);
         self::assertSame($declared->toArray(), DossierfacileGatewayFactory::usagePolicy()->toArray());
         self::assertNull($declared->rateLimits, 'no limit published');
-        self::assertSame(89 * 86400, $declared->rights->caching->maxTtl, 'three months at their shortest');
+        self::assertSame(89 * 86400, $declared->rights->retention?->maxAge, 'three months at their shortest: how long the file may be kept');
+        self::assertNull($declared->rights->caching->maxTtl, 'the terms bound the keeping, not the serving again');
 
         $registry = new Registry([new DossierfacileGatewayFactory(new MockHttpClient())], ['dossierfacile' => ['factory' => 'dossierfacile', 'options' => self::options()]]);
         self::assertSame($declared->toArray(), $registry->policy('dossierfacile')->toArray());

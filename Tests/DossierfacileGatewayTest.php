@@ -48,7 +48,7 @@ final class DossierfacileGatewayTest extends TestCase
 
             return new MockResponse((string) file_get_contents(__DIR__.'/Fixtures/'.$file.'.json'), ['http_code' => (int) $status, 'response_headers' => ['content-type' => 'application/json']]);
         });
-        $gateway = (new DossierfacileGatewayFactory($http))->create($options + ['client_id' => 'meyers-estate', 'client_secret' => 'df-secret', 'preprod' => true, 'callback_api_key' => 'cb-key-42', 'clock' => fn (): int => $this->now]);
+        $gateway = (new DossierfacileGatewayFactory($http))->create($options + ['client_id' => 'example-estate', 'client_secret' => 'df-secret', 'preprod' => true, 'callback_api_key' => 'cb-key-42', 'clock' => fn (): int => $this->now]);
         self::assertInstanceOf(Gateway::class, $gateway);
 
         return $gateway;
@@ -68,19 +68,19 @@ final class DossierfacileGatewayTest extends TestCase
 
     public function testTheConsentPageIsKeycloaksAuthorizationEndpoint(): void
     {
-        $url = $this->gateway([])->tenantFileConnectUrl('https://meyers.example/candidature/dossierfacile', 'st4te-x');
+        $url = $this->gateway([])->tenantFileConnectUrl('https://sci-exemple.example/candidature/dossierfacile', 'st4te-x');
 
-        self::assertSame(self::SSO.'/auth?client_id=meyers-estate&redirect_uri=https%3A%2F%2Fmeyers.example%2Fcandidature%2Fdossierfacile&response_type=code&scope=openid&state=st4te-x', $url);
+        self::assertSame(self::SSO.'/auth?client_id=example-estate&redirect_uri=https%3A%2F%2Fsci-exemple.example%2Fcandidature%2Fdossierfacile&response_type=code&scope=openid&state=st4te-x', $url);
         self::assertSame([], $this->calls, 'no call');
         self::assertStringStartsWith('https://sso.dossierfacile.logement.gouv.fr/auth/realms/dossier-facile/protocol/openid-connect/auth?', $this->gateway([], ['preprod' => false])->tenantFileConnectUrl('https://x', 's'));
     }
 
     public function testTheCodeIsExchangedThenTheProfileLinksAndGivesTheFile(): void
     {
-        $file = $this->gateway(['token-tenant', 'profile'])->connectTenantFile('code-abc', 'https://meyers.example/candidature/dossierfacile');
+        $file = $this->gateway(['token-tenant', 'profile'])->connectTenantFile('code-abc', 'https://sci-exemple.example/candidature/dossierfacile');
 
         self::assertSame(['POST', self::SSO.'/token'], [$this->calls[0][0], $this->calls[0][1]]);
-        self::assertSame('grant_type=authorization_code&client_id=meyers-estate&client_secret=df-secret&code=code-abc&redirect_uri=https%3A%2F%2Fmeyers.example%2Fcandidature%2Fdossierfacile', $this->calls[0][2]['body']);
+        self::assertSame('grant_type=authorization_code&client_id=example-estate&client_secret=df-secret&code=code-abc&redirect_uri=https%3A%2F%2Fsci-exemple.example%2Fcandidature%2Fdossierfacile', $this->calls[0][2]['body']);
         self::assertSame(['GET', self::API.'/dfc/tenant/profile'], [$this->calls[1][0], $this->calls[1][1]]);
         self::assertSame('Bearer eyJhbGciOiJSUzI1NiJ9.tenant.sig', $this->header(1, 'Authorization'));
 
@@ -104,7 +104,7 @@ final class DossierfacileGatewayTest extends TestCase
         $gateway = $this->gateway(['token-client', 'tenant-to-process', 'tenant-to-process', 'token-client', 'tenant-to-process']);
         $file = $gateway->fetchTenantFile('12901');
 
-        self::assertSame(['POST', self::SSO.'/token', 'grant_type=client_credentials&client_id=meyers-estate&client_secret=df-secret'], [$this->calls[0][0], $this->calls[0][1], $this->calls[0][2]['body']]);
+        self::assertSame(['POST', self::SSO.'/token', 'grant_type=client_credentials&client_id=example-estate&client_secret=df-secret'], [$this->calls[0][0], $this->calls[0][1], $this->calls[0][2]['body']]);
         self::assertSame(['GET', self::API.'/dfc/api/v1/tenants/12901', 'Bearer eyJhbGciOiJSUzI1NiJ9.client.sig'], [$this->calls[1][0], $this->calls[1][1], $this->header(1, 'Authorization')]);
         self::assertSame([TenantFileStatus::TO_PROCESS, 'COUPLE'], [$file->status, $file->application]);
         self::assertFalse($file->status->isReadable(), 'documents closed until validated');

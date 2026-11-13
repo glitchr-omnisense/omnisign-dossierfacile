@@ -26,6 +26,14 @@ Written from DossierFacile's partner documentation and its public back-end's sou
 [Documentation](docs/index.md): the flow, the calls, the options, the callbacks, the retention and
 what a site must not keep, the charter.
 
+## Install
+
+```sh
+composer require omnisign/dossierfacile
+```
+
+It brings the family's core, `omnisense/omnisign`, and `omnisense/contracts` with it. **A DossierFacile Connect partner account is needed** (the partner charter signed): its OAuth client id and secret. Not verified against the real service; the tests run on recorded answers.
+
 ## Usage policy
 
 `policy.json`, read on 2026-11-10 on DossierFacile's [partner portal](https://partenaire.dossierfacile.logement.gouv.fr):
